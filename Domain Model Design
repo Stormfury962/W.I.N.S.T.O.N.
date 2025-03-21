@@ -1,0 +1,42 @@
+Domain Model:
+This is a list of the entities present within the software.
+
+Entities:
+  1. User Account
+    -User ID
+    -Name
+    -Email
+    -Password
+    -isAdmin
+  2. Question
+    -Post ID
+    -Title
+    -Body
+    -User ID
+    -Created At
+    -Updated At
+  3. Reply
+    -Post ID
+    -Body
+    -Question ID
+    -User ID
+    -Created At
+  4. Vote
+    -ID
+    -User ID
+    -Post ID
+    -Vote Type
+
+
+Breakdown of Entities:
+User Account: Requires authentication using an email and password. On creation, a user account will have a unique user id. isAdmin flag used to allow for data management like removing posts or users. User account should also store the user's name/screen name
+Question: Central data structure. Generates a unique Post ID (shared between question and reply types) used to identify entity. Questions store a title (title of the post), a body (main text of post) and the user id of the creator of the question. Questions should also store a created and updated at d/t to date posts.
+Reply: Similar to question data type except it does not require a title entry (considering unifying reply and question into one data structure)
+Vote: The vote entity contains its own personal ID for identification as well as a user ID, a post ID, and a vote type. The user ID is used to verify that each user can only vote on each post once. The post ID checks which post is being voted on, and the vote type determines whether the vote is a positive or negative vote.
+
+Crucial Service Objects:
+  User Authentication: For the creation of a User Account object, requires a valid email as well as a password. Will also take in a name field to store in User Account object.
+  Post Creation: Allow a user to initiate the creation of a Question ir reply object type. Automatically generates a unique POSTID for the question, requires input of information in the body field and a title if a Question object type. When created, marks down d/t and store in created_at field.
+  Post Editing: Allow a user to intiate modification of the body field of a question or reply object. When completed, modifies updated_at field with current d/t.
+  Voting: Allow a user to vote on a post object. Automatically generates a unique ID and takes in the current user ID as well as the post ID of the post being interacted with. Also stores the vote type. Checks to make sure no vote entity exists with the same user id and vote id.
+  Retreive Vote Counts: Search along a specific post ID among vote entities and find the total number of votes. On positive vote type, add 1 to total, else, subtract one from total.
