@@ -1,16 +1,4 @@
-// File structure:
-// - server.js (main application file)
-// - package.json (dependencies)
-// - /config (database configuration)
-// - /routes (API routes)
-// - /models (database models)
-// - /middleware (authentication middleware)
-// - /public (static files, frontend)
-// - /views (HTML templates)
-
-// =====================================================
 // server.js
-// =====================================================
 const express = require('express');
 const mysql = require('mysql2/promise');
 const session = require('express-session');
@@ -28,12 +16,11 @@ const dbConfig = {
   database: 'forum_db'
 };
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Session configuration
+// Session info
 const sessionStore = new MySQLStore(dbConfig);
 app.use(session({
   key: 'forum_session',
@@ -70,11 +57,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// =====================================================
 // Routes
-// =====================================================
-
-// Home page - display all posts
+// Home page and displaying posts
 app.get('/', async (req, res) => {
   try {
     const [posts] = await pool.query(`
@@ -114,7 +98,7 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
-// Get single post with replies
+// API endpoint to get specific post based on id
 app.get('/api/posts/:id', async (req, res) => {
   try {
     const postId = req.params.id;
@@ -354,10 +338,7 @@ app.delete('/api/posts/:id', isAuthenticated, async (req, res) => {
   }
 });
 
-// =====================================================
 // Authentication Routes
-// =====================================================
-
 // Register
 app.post('/api/register', async (req, res) => {
   try {
@@ -381,7 +362,7 @@ app.post('/api/register', async (req, res) => {
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
     
-    // Create user
+    // Create user in database
     const [result] = await pool.query(
       'INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)',
       [username, email, passwordHash]
@@ -477,9 +458,7 @@ app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-// =====================================================
 // package.json
-// =====================================================
 /*
 {
   "name": "forum-app",
