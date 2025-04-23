@@ -1,3 +1,4 @@
+import '../styles/footer.css';
 
 function Footer(){
     return(
@@ -5,7 +6,6 @@ function Footer(){
             <p>&copy; {new Date().getFullYear()} WINSTON</p>
         </footer>
     );
-
 }
 
 export default Footer
