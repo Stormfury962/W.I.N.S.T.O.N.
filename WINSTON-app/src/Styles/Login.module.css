@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap');
+
+*{
+    margin:0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat", sans-serif;
+}
+
+
+.page{ 
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #ffffff;
+}
+
+#root {
+    width: 100%;
+    padding: 0 0.6rem; 
+}
+
+.loginContainer {
+    max-width: 410px;
+    margin: 0 auto;
+    border-radius: 0.5rem;
+    padding: 2rem 1.5rem;
+    background: #ffffff; 
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.loginContainer .formTitle {
+    text-align: center;
+    font-size: 1.37rem;
+    font-weight: 600;
+    margin-bottom: 1.87rem;
+}
+
+.loginContainer .socialLogin {
+    display: flex;
+    gap: 1.31rem;
+}
+
+.socialLogin .socialButton { 
+    display: flex;
+    width: 100%;
+    gap: 0.81rem;
+    cursor:pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.75rem 0;
+    align-items: center;
+    border-radius: 0.31rem;
+    justify-content: center;
+    background: #F9F8FF;
+    border: 1px solid #D5CBFF;
+    transition: 0.3s ease; 
+}
+ 
+.socialLogin .socialButton:hover {
+    background: #F9F8FF;
+    border-color: #5F41E4;
+}
+
+
+.socialLogin .socialButton .socialIcon {
+    width: 23px;
+}
+
+.loginContainer .separator{
+    margin: 1.5rem 0;
+    text-align: center;
+    position: relative;
+}
+
+.loginContainer .separator span{
+    position: relative;
+    z-index: 1;
+    background: #fff;
+    padding: 0 0.9rem;
+    font-size: 1.06rem;
+    font-weight: 500;
+}
+
+.loginContainer .separator::after {
+    position: absolute;
+    content: "";
+    left: 0; 
+    top: 50%;
+    width: 100%;
+    height: 1px;
+    background: #bfb3f2;
+}
+
+.loginForm .inputWrapper{
+    height:54px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
+
+.loginForm .inputWrapper .inputField {
+    height: 100%;
+    width: 100%;
+    font-size: 1.06rem; 
+    border-radius: 0.31rem;
+    border: 1px solid #bfb3f2;
+    padding: 0 1.25rem 0 3rem;
+    transition: 0.2s ease;
+}
+
+
+.loginForm .inputWrapper .inputField::placeholder {
+    color: #a395e0;
+}
+
+.loginForm .inputWrapper {
+    position: relative;
+    height: 54px;
+    width: 100%;
+    margin-bottom: 1.5rem;
+  }
+  
+  .loginForm .inputWrapper i {
+    position: absolute;
+    left: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #a395e0;
+    pointer-events: none;
+    transition: 0.2s ease;
+  }
+  
+
+.loginForm .inputWrapper .inputField:focus ~i {
+    color: #5F41E4;
+}
+
+.loginForm .loginButton {
+    width: 100%;
+    height: 54px; 
+    cursor: pointer;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.125rem;
+    background: #5F41E4;
+    margin-top: 2.19rem;
+    margin-bottom: 0.6rem;
+    border-radius: 0.31rem; 
+}
+
+
+.loginForm .loginButton:hover { 
+    background: #4320df;
+}
+
+.loginContainer a {
+    color: #5F41E4;
+    font-weight: 500; 
+    text-decoration: none;
+}
+
+.loginContainer a:hover {
+    text-decoration: underline;
+}
+
+
