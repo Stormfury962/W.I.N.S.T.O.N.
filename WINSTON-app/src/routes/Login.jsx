@@ -61,6 +61,7 @@ const Login = () => {
                     onChange={(e) => setEmail(e.target.value)}/>
                 <i className="material-symbols-outlined">mail</i>
             </div>
+            
 
             <div className={styles.inputWrapper}>
                 <input
