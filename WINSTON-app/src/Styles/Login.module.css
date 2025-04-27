@@ -99,6 +99,7 @@
     margin-bottom: 1.5rem;
 }
 
+
 .loginForm .inputWrapper .inputField {
     height: 100%;
     width: 100%;
@@ -109,6 +110,15 @@
     transition: 0.2s ease;
 }
 
+.loginForm .inputWrapper .registerInputField {
+    height: 100%;
+    width: 100%;
+    font-size: 1.06rem; 
+    border-radius: 0.31rem;
+    border: 1px solid #bfb3f2;
+    padding: 0 1.25rem 0 3rem;
+    transition: 0.2s ease;
+}
 
 .loginForm .inputWrapper .inputField::placeholder {
     color: #a395e0;

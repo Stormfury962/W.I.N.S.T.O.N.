@@ -1,17 +1,10 @@
 import React, { useState } from "react";
-import Navbar from '../components/Navbar.jsx'
-
 import { useNavigate, Link } from "react-router-dom";
-
 import googleIcon from '../Assets/googleIcon.svg';
 import appleIcon from '../Assets/apple-icon.svg';
-import mailIcon from '../Assets/mailIcon.svg'; 
-
 import styles from '../styles/Login.module.css';
-
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase.js';
-
 
 
 const Login = () => {
