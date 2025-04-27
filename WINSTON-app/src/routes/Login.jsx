@@ -5,6 +5,7 @@ import appleIcon from '../Assets/apple-icon.svg';
 import styles from '../styles/Login.module.css';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase.js';
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 
 const Login = () => {
@@ -28,11 +29,24 @@ const Login = () => {
         alert("Login failed: " + err.message);
       }
     };
+
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+          const result = await signInWithPopup(auth, provider);
+          console.log("Google sign-in successful:", result.user);
+          navigate("/dashboard");
+        } catch (error) {
+          console.error("Google sign-in error:", error.message);
+          alert("Google Sign-In failed: " + error.message);
+        }
+      };
+      
   return (
     <div className={styles.page}>
     <div className={styles.loginContainer}>
         <h2 className={styles.formTitle}>Log in with</h2>
-        <div className={styles.socialLogin}>
+        <div onClick={handleGoogleSignIn} className={styles.socialLogin}>
             <button className={styles.socialButton}>
             <img src={googleIcon} alt="Google" className={styles.socialIcon}/>
                 Google

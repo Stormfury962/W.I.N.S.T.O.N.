@@ -100,7 +100,8 @@ header {
   
   .nav-link-btn:hover {
     text-decoration: underline;
+    color: var(--secondaryColor);
   }
-  
+
  
   
