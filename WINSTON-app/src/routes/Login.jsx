@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from '../components/Navbar.jsx'
+
+import { useNavigate, Link } from "react-router-dom";
 
 import googleIcon from '../Assets/googleIcon.svg';
 import appleIcon from '../Assets/apple-icon.svg';
@@ -7,8 +9,32 @@ import mailIcon from '../Assets/mailIcon.svg';
 
 import styles from '../styles/Login.module.css';
 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../firebase.js';
+
+
 
 const Login = () => {
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const navigate = useNavigate();
+  
+    const handleLogin = async (e) => {
+      e.preventDefault();
+      console.log("Attempting login...");
+  
+      try {
+        const userCred = await signInWithEmailAndPassword(auth, email, password);
+        const userEmail = userCred.user.email;
+        console.log("Logged in as:", userEmail);
+  
+        navigate("/dashboard");
+  
+      } catch (err) {
+        console.error("Login Failed:", err.message);
+        alert("Login failed: " + err.message);
+      }
+    };
   return (
     <div className={styles.page}>
     <div className={styles.loginContainer}>
@@ -25,16 +51,25 @@ const Login = () => {
         </div>
         <p className={styles.separator}><span>or</span></p>
 
-        <form action="#" className={styles.loginForm}>
-        <div className={styles.inputWrapper}>
-                <input type="email" placeholder="Email address" 
-                className={styles.inputField} required />
-            <   i className="material-symbols-outlined">mail</i>
+        <form onSubmit={handleLogin} className={styles.loginForm}>        <div className={styles.inputWrapper}>
+                <input
+                    type="email"
+                    placeholder="Email address"
+                    className={styles.inputField}
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}/>
+                <i className="material-symbols-outlined">mail</i>
             </div>
 
             <div className={styles.inputWrapper}>
-                <input type="password" placeholder="Password" 
-                className={styles.inputField} required />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    className={styles.inputField}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}/>
                 <i className="material-symbols-outlined">lock</i>
             </div>
 
@@ -43,7 +78,7 @@ const Login = () => {
         <button className={styles.loginButton}>Log In</button>
         </form>
 
-        <p className={styles.singupText}>Don't have an account? <a href="#">Register Here</a></p>
+        <p className={styles.signupText}>Don't have an account? <Link to="/register">Register Here</Link></p>
     </div>
     </div>
   );
