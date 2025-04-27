@@ -87,5 +87,20 @@ header {
     z-index: 2000;
   }  
 
+  .nav-link-btn {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    text-align: center;
+    text-decoration: none;
+  }
+  
+  .nav-link-btn:hover {
+    text-decoration: underline;
+  }
+  
  
   
