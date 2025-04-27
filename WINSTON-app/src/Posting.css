@@ -1,0 +1,77 @@
+body{
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    margin:0;
+    padding:0px;
+    background: #ffffff;
+    color:#424242;
+    text-align:center
+    }
+    .mainwrap {
+        width: 83%;
+        max-width:620px;
+        margin: 30px auto;
+        padding:18px;
+        background: rgb(255, 255, 255);
+        box-shadow:0px 2px 9px rgba(0, 0, 0, 0.1);
+        border-radius:9px
+    }
+    h1 {
+    color: #3a3a3a;
+    margin-bottom: 23px;
+    }
+    .createarea {
+    margin-bottom: 18px;
+    }
+    input, textarea{
+    width:98%;
+    padding:11px;
+    margin:10px 0px;
+    border:1px solid #bbb;
+    border-radius:5px;
+    }
+    button{
+    background: #629cd3;
+    padding:9px 16px;
+    color:rgb(255, 255, 255);
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+    }
+    button:hover{
+    background-color:#3175b2;
+    }
+    .postlist {
+    margin-top: 30px
+    }
+    .postcard {
+    background:#f0f0f0;
+    padding:14px;
+    margin-bottom:11px;
+    border-radius:7px;
+    box-shadow:0 1px 6px rgba(0,0,0,0.08);
+    }
+    .postcard h3 {
+    color: #425c75;
+    }
+    .answerplace {
+    margin-top:8px;
+    }
+    textarea.answerarea{
+    width: 99%;
+    height: 65px;
+    font-size:14px;
+    }
+    button.answerbutton{
+    background:#55c468;
+    margin-top:9px;
+    padding: 9px 12px
+    }
+    button.answerbutton:hover{
+    background: #267a2d;
+    }
+    .replyarea{
+    background-color:#ffffff;
+    padding: 11px;
+    margin-top: 9px;
+    border-radius:4px
+    }    
