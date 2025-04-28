@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar.jsx'
 
 import React, { useEffect, useState } from "react";
-import styles from '../styles/Login.module.css';
+import styles from '../styles/login.module.css';
 import { auth } from "../firebase";
 import { signOut } from "firebase/auth";
 
