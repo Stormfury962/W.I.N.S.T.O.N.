@@ -8,7 +8,7 @@ import Profile from './routes/Profile.jsx'
 import Login from './routes/Login.jsx'
 import Register from './routes/Register.jsx'
 import Layout from './components/Layout.jsx'
-
+import CreatePost from './routes/CreatePost.jsx'
 
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -24,6 +24,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
         { path: '/contact', element: <Contact /> },
         { path: '/profile', element: <Profile /> },
         { path: '/login', element: <Login /> },
+        { path: '/new-post', element: <CreatePost /> },
         { path: '/register', element: <Register /> }
       ]
     }
