@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import styles from '../styles/login.module.css';
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from '../firebase.js';
-
+import { api } from '../services/api';
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -18,17 +18,26 @@ const Register = () => {
 
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      console.log("Registered in Firebase:", userCred.user.email);
 
-      console.log("Registered:", userCred.user.email);
-      console.log("Username:", username);
-      console.log("Role:", role);
 
-      //still need to use backend API & insert info to databse
+      try {
+        await api.registerUser({
+          username,
+          email: userCred.user.email,
+          password: password, 
+          role
+        });
 
-      navigate("/dashboard"); 
-    } catch (err) {
-      console.error("Registration Failed:", err.message);
-      alert("Registration failed: " + err.message);
+        console.log("User registered in database");
+        navigate("/dashboard"); 
+      } catch (dbError) {
+        console.error("Database registration failed:", dbError.message);
+        alert("Registration in database failed: " + dbError.message);
+      }
+    } catch (authErr) {
+      console.error("Firebase registration failed:", authErr.message);
+      alert("Registration failed: " + authErr.message);
     }
   };
 
@@ -36,8 +45,9 @@ const Register = () => {
       <div className={styles.page}>
       <div className={styles.loginContainer}>
           <h2 className={styles.formTitle}>Register</h2>
-          
-          <form onSubmit={handleRegister} className={styles.loginForm}>        <div className={styles.inputWrapper}>
+
+          <form onSubmit={handleRegister} className={styles.loginForm}>
+              <div className={styles.inputWrapper}>
                   <input
                       type="email"
                       placeholder="Email address"
@@ -67,7 +77,6 @@ const Register = () => {
                       required
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}/>
-
                   <i className="material-symbols-outlined">person</i>
               </div>
 
@@ -82,15 +91,14 @@ const Register = () => {
                 </select>
                 <i className="material-symbols-outlined">school</i>
               </div>
-        
+
           <button className={styles.loginButton}>Register</button>
           </form>
-  
+
           <p className={styles.signupText}>Already have an account? <Link to="/Login">Login Here</Link></p>
       </div>
       </div>
     );
   };
-  
-  export default Register;
-  
+
+export default Register;

@@ -46,24 +46,26 @@ export default function initRoutes(db) {
 
   router.post("/api/getUserRole", async (req, res) => {
     const { email } = req.body;
-  
-      if (!email) {
-        return res.status(400).json({ error: "Email is required" });
-      }
-      try {
-        const user = await db.get("SELECT is_admin FROM users WHERE email = ?", [email]);
-        if (!user) {
-          return res.status(404).json({ error: "User not found" });
-        }
-        const role = user.is_admin ? "ta" : "student";
-        res.json({ role });
-      } catch (err) {
-        res.status(500).json({ error: err.message });
-      }
-    });
 
+    if (!email) {
+      return res.status(400).json({ error: "Email is required" });
+    }
+    try {
+      const user = await db.get("SELECT user_id, is_admin FROM users WHERE email = ?", [email]);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      const role = user.is_admin ? "ta" : "student";
+      res.json({ 
+        role,
+        user_id: user.user_id 
+      });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+   }
+  }); 
   
-  // List all posts
+  //list posts
   router.get("/api/posts", async (req, res) => {
     try {
       const posts = await db.all(`
@@ -78,7 +80,7 @@ export default function initRoutes(db) {
     }
   });
 
-  // Create a new post
+  //new post
   router.post("/api/posts", async (req, res) => {
     const { user_id, title, body } = req.body;
 
@@ -99,7 +101,7 @@ export default function initRoutes(db) {
     }
   });
 
-  // Cast a vote (post or reply)
+  //casting a vote
   router.post("/api/vote", async (req, res) => {
     const { user_id, post_id, reply_id, vote_type } = req.body;
 
@@ -116,7 +118,6 @@ export default function initRoutes(db) {
     }
 
     try {
-      // Try to insert or replace vote
       await db.run(
         `INSERT INTO votes (user_id, post_id, reply_id, vote_type)
          VALUES (?, ?, ?, ?)
@@ -130,7 +131,7 @@ export default function initRoutes(db) {
     }
   });
 
-  // Get total votes for a post
+  //return total votes
   router.get("/api/posts/:id/votes", async (req, res) => {
     const post_id = req.params.id;
 
@@ -150,7 +151,7 @@ export default function initRoutes(db) {
     }
   });
 
-  // Get total votes for a reply
+  //return total votes for reply
   router.get("/api/replies/:id/votes", async (req, res) => {
     const reply_id = req.params.id;
 

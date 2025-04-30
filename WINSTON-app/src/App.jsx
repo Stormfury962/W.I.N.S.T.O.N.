@@ -1,24 +1,32 @@
 import { useState } from 'react';
-import {useEffect} from 'react'
-import {Link} from 'react-router-dom'
+import {useEffect} from 'react';
+import {Link} from 'react-router-dom';
 
-import Header from './components/Header.jsx'
-import Footer from './components/Footer.jsx'
-import Login from './routes/Login.jsx'
-import Register from './routes/Register.jsx'
-import Navbar from './components/Navbar.jsx'
+import Header from './components/Header.jsx';
+import Footer from './components/Footer.jsx';
+import Login from './routes/Login.jsx';
+import Register from './routes/Register.jsx';
+import Navbar from './components/Navbar.jsx';
+import { api } from './services/api';
 
 
 function App() {
-  const [posts, setPosts] = useState([])
+  const [posts, setPosts] = useState([]);
+  
   useEffect(() => {
-    fetch("http://localhost:3000/api/posts")
-      .then(res => res.json())
-      .then(data => setPosts(data.posts))
-      .catch(err => console.error("Failed to load posts", err))}, [])
+    const fetchPosts = async () => {
+      try {
+        const data = await api.getPosts();
+        setPosts(data.posts || []);
+      } catch (error) {
+        console.error("Failed to load posts", error);
+      }
+    };
+    
+    fetchPosts();
+  }, []);
 
   return(
-    
     <div style={{ textAlign: 'center', padding: '2rem' }}>
       <h1>Welcome to WINSTON</h1>
       <p>Web-based Interface Network for Students, TAs, and Organized Networks</p>
@@ -40,9 +48,6 @@ function App() {
         ))
       )}
     </div>
-    
   );
-  
 }
-
 export default App
