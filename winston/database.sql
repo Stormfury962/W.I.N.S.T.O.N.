@@ -2,8 +2,10 @@ CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    password_hash TEXT NOT NULL,
-    is_admin BOOLEAN DEFAULT FALSE
+    password_hash TEXT,
+    is_admin BOOLEAN DEFAULT FALSE,
+    firebase_uid TEXT UNIQUE
+
 );
 
 CREATE TABLE IF NOT EXISTS posts (
