@@ -111,7 +111,7 @@ export default function initRoutes(db) {
       });
     }
 
-    if (vote_type !== "upvote" && vote_type !== "downvote") {
+    if (vote_type !== 1 && vote_type !== -1) {
       return res
         .status(400)
         .json({ error: 'vote_type must be either "upvote" or "downvote"' });
@@ -138,8 +138,7 @@ export default function initRoutes(db) {
     try {
       const result = await db.get(
         `SELECT 
-           SUM(vote_type = 'upvote') AS upvotes,
-           SUM(vote_type = 'downvote') AS downvotes
+           SUM(vote_type)
          FROM votes
          WHERE post_id = ?`,
         [post_id],
@@ -158,8 +157,7 @@ export default function initRoutes(db) {
     try {
       const result = await db.get(
         `SELECT 
-           SUM(vote_type = 'upvote') AS upvotes,
-           SUM(vote_type = 'downvote') AS downvotes
+           SUM(vote_type)
          FROM votes
          WHERE reply_id = ?`,
         [reply_id],
