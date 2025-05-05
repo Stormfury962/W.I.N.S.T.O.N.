@@ -205,5 +205,24 @@ export default function initRoutes(db) {
     }
   });
 
+  //helps show user role
+  router.get("/api/getUserRole/:user_id", async (req, res) => {
+  const user_id = req.params.user_id;
+
+  if (!user_id) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+  try {
+    const user = await db.get("SELECT user_id, is_admin FROM users WHERE user_id = ?", [user_id]);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const role = user.is_admin ? "TA" : "Student";
+    res.json({ role });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+  });
+
   return router;
 }

@@ -26,6 +26,8 @@ export const api = {
 
   registerUser: (userData) => makeRequest('/api/register', 'POST', userData),
   getUserRole: (email) => makeRequest('/api/getUserRole', 'POST', { email }),
+  getUserRoleById: (userId) => makeRequest(`/api/getUserRole/${userId}`),
+
 
   getPosts: () => makeRequest('/api/posts'),
   createPost: (postData) => makeRequest('/api/posts', 'POST', postData),

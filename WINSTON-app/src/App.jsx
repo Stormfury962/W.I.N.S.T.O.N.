@@ -31,32 +31,51 @@ function App() {
   const [replies, setReplies] = useState({});
   const [user, setUser] = useState(null);
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const data = await api.getPosts();
-        const postsWithVotes = await Promise.all((data.posts || []).map(async (post) => {
-          const voteData = await getVote(post.post_id);
+  const fetchPosts = async () => {
+    try {
+      console.log("Fetching posts...");
+      const data = await api.getPosts();
+      console.log("Posts data received:", data); 
+      const postsWithVotesAndRoles = await Promise.all((data.posts || []).map(async (post) => {
+        console.log(`Processing post ${post.post_id}`);
+        const voteData = await getVote(post.post_id);
+
+        try {
+          const roleData = await api.getUserRoleById(post.user_id);
+          console.log(`Role for user ${post.user_id}:`, roleData);
           return {
             ...post,
-            votes: voteData.votes
+            votes: voteData.votes,
+            role: roleData.role
           };
-        }));
-        setPosts(postsWithVotes);
-        
-      } catch (error) {
-        console.error("Failed to load posts", error);
-      }
-    };
-    fetchPosts();
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
-      if (!currentUser) {
-          navigate('/login');
-      }
-    return () => unsubscribe();
+        } catch (error) {
+          console.error(`Failed to fetch role for user ${post.user_id}:`, error);
+          return {
+            ...post,
+            votes: voteData.votes,
+            role: "Unknown"
+          };
+        }
+      }));
+      console.log("Final posts with roles:", postsWithVotesAndRoles);
+      setPosts(postsWithVotesAndRoles);
+
+    } catch (error) {
+      console.error("Failed to load posts", error);
+    }
+  };
+  fetchPosts();
+  
+  const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+    setUser(currentUser);
+    if (!currentUser) {
+        navigate('/login');
+    }
   });
 
-  }, []);
+    return () => unsubscribe();
+  }, []); 
+
   const handleVote = async (postId, value) => {
     if (!user) {
         alert("You must be logged in to vote");
@@ -137,7 +156,7 @@ function App() {
           <div key={i} style={{ border: '1px solid #ccc', margin: '10px auto', padding: '10px', maxWidth: '600px', textAlign: 'left' }}>
             <strong>{post.title}</strong>
             <p>{post.body}</p>
-            <small>Posted by {post.username}</small>
+            <small>Posted by {post.username} ({post.role})</small>
 
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "8px" }}>
               <button onClick={() => handleVote(post.post_id, 1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
