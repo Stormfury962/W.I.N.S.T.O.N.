@@ -131,8 +131,13 @@ function App() {
             <small>Posted by {post.username}</small>
 
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "8px" }}>
-              <button onClick={() => handleVote(post.post_id, 1)}> Upvote</button>
-              <button onClick={() => handleVote(post.post_id, -1)}> Downvote</button>
+              <button onClick={() => handleVote(post.post_id, 1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
+               <i className="material-symbols-outlined">keyboard_arrow_up</i> Upvote
+             </button>
+             <span>0</span>
+             <button onClick={() => handleVote(post.post_id, -1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
+               <i className="material-symbols-outlined">keyboard_arrow_down</i>Downvote 
+             </button>
               <p> Votes: {post.votes}</p>
             </div>
 
