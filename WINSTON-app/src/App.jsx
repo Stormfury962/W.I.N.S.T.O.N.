@@ -74,7 +74,14 @@ function App() {
   });
 
     return () => unsubscribe();
-  }, []); 
+  }, []);
+  useEffect(() => {
+    if (posts.length > 0) {
+      posts.forEach(post => {
+        fetchReplies(post.post_id);
+      });
+    }
+  }, [posts.length]); 
 
   const handleVote = async (postId, value) => {
     if (!user) {
