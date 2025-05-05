@@ -8,6 +8,7 @@ import { auth } from '../firebase.js';
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 
+
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -80,7 +81,7 @@ const Login = () => {
                 <i className="material-symbols-outlined">lock</i>
             </div>
 
-        <a href="#" className={styles.forgotPassLink}>Forgot Password</a>
+        <a href="#" className={styles.forgotPassLink}> <Link to="/ForgotPassword">Forgot Password?</Link></a>
 
         <button className={styles.loginButton}>Log In</button>
         </form>

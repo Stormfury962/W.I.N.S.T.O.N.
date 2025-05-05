@@ -9,6 +9,8 @@ import Login from './routes/Login.jsx'
 import Register from './routes/Register.jsx'
 import Layout from './components/Layout.jsx'
 import CreatePost from './routes/CreatePost.jsx'
+import ForgotPassword from "./routes/ForgotPassword.jsx";
+
 
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
@@ -26,7 +28,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
         { path: '/profile', element: <Profile /> },
         { path: '/login', element: <Login /> },
         { path: '/new-post', element: <CreatePost /> },
-        { path: '/register', element: <Register /> }
+        { path: '/register', element: <Register /> },
+        { path: '/ForgotPassword', element: <ForgotPassword /> }
+
       ]
     }
   ]);

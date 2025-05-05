@@ -35,7 +35,7 @@ function CreatePost() {
             });
 
             alert("Post created!");
-            navigate("/");
+            navigate("/Home");
         } catch (err) {
             console.error("Error submitting post:", err);
             alert(err.message || "Failed to create post");
