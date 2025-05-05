@@ -171,5 +171,42 @@ export default function initRoutes(db) {
     }
   });
 
+  //post a reply
+  router.post('/api/replies', async(req, res)=> {
+    const {post_id, user_id, body} = req.body;
+
+    if (!body || !user_id || !post_id){
+      return res.status(400).json({error: 'Missing fields'});
+    }
+    try{
+      await db.run(
+        "INSERT INTO replies (post_id, user_id, body) VALUES (?, ?, ?)",
+        [post_id, user_id, body]
+      );
+      res.json({ message: "Reply added" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: "Failed to add reply" });
+    }
+  });
+
+  //get all replies to a post
+  router.get("/api/posts/:id/replies", async (req,res) => {
+    const post_id = req.params.id;
+    try{
+      const replies = await db.all(
+        `SELECT replies.*, users.username
+         FROM replies
+         JOIN users ON replies.user_id = users.user_id
+         WHERE post_id = ?
+         ORDER BY created_at ASC`,
+         [post_id]
+      );
+      res.json({replies});
+    }catch(err){
+      res.status(500).json({error: err.message});
+    }
+  });
+
   return router;
 }
