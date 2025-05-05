@@ -1,6 +1,4 @@
 import express from "express";
-import admin from './firebaseAdmin.js';
-
 
 const router = express.Router();
 
@@ -15,61 +13,32 @@ export default function initRoutes(db) {
   });
 
   router.post("/api/register", async (req, res) => {
-    const { username, email, password, uid } = req.body;
-  
+    const { username, email, password } = req.body;
+
     if (!username || !email || !password) {
       return res
         .status(400)
         .json({ error: "Username, email and password are required" });
     }
-  
+
     try {
       const existingUsers = await db.all(
         "SELECT * FROM users WHERE username = ? OR email = ?",
-        [username, email]
+        [username, email],
       );
-  
+
       if (existingUsers.length > 0) {
         return res
           .status(409)
           .json({ error: "Username or email already exists" });
       }
-  
-      await db.run(
-        "INSERT INTO users (username, email, password_hash, firebase_uid) VALUES (?, ?, ?, ?)",
-        [username, email, password, uid || null]
-      );
-  
-      res.status(201).json({ message: "User registered successfully" });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-  });
 
-  router.post("/api/ensure-user", async (req, res) => {
-    const { email, uid, username } = req.body;
-  
-    if (!email || !uid || !username) {
-      return res.status(400).json({ error: "Missing required fields" });
-    }
-  
-    try {
-      const existing = await db.get("SELECT * FROM users WHERE email = ?", [email]);
-  
-      if (!existing) {
-        await db.run(
-          `INSERT INTO users (username, email, firebase_uid)
-           VALUES (?, ?, ?)`,
-          [username, email, uid]
-        );
-      } else if (!existing.firebase_uid) {
-        await db.run(
-          `UPDATE users SET firebase_uid = ? WHERE email = ?`,
-          [uid, email]
-        );
-      }
-  
-      res.status(200).json({ message: "User ensured" });
+      await db.run(
+        "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
+        [username, email, password],
+      );
+
+      res.status(201).json({ message: "User registered successfully" });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -254,59 +223,6 @@ export default function initRoutes(db) {
     res.status(500).json({ error: err.message });
   }
   });
-
-  //helps show user role
-  router.get("/api/getUserRole/:user_id", async (req, res) => {
-  const user_id = req.params.user_id;
-
-  if (!user_id) {
-    return res.status(400).json({ error: "User ID is required" });
-  }
-  try {
-    const user = await db.get("SELECT user_id, is_admin FROM users WHERE user_id = ?", [user_id]);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    const role = user.is_admin ? "TA" : "Student";
-    res.json({ role });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-  });
-
-  router.post("/admin/sync-firebase-users", async (req, res) => {
-    try {
-      const syncBatch = async (nextPageToken) => {
-        const result = await admin.auth().listUsers(1000, nextPageToken);
-  
-        for (const user of result.users) {
-          const { uid, email, displayName } = user;
-  
-          if (!email) continue;
-  
-          const username = displayName || email.split("@")[0];
-  
-          await db.run(
-            `INSERT INTO users (firebase_uid, email, username)
-             VALUES (?, ?, ?)
-             ON CONFLICT(firebase_uid) DO UPDATE SET email = excluded.email`,
-            [uid, email, username]
-          );
-        }
-  
-        if (result.pageToken) {
-          await syncBatch(result.pageToken);
-        }
-      };
-  
-      await syncBatch();
-      res.json({ message: "Firebase users synced successfully" });
-    } catch (err) {
-      console.error("Sync failed:", err);
-      res.status(500).json({ error: "Firebase sync failed" });
-    }
-  });
-  
 
   return router;
 }

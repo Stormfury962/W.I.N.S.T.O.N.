@@ -22,19 +22,7 @@ const Login = () => {
         const userCred = await signInWithEmailAndPassword(auth, email, password);
         const userEmail = userCred.user.email;
         console.log("Logged in as:", userEmail);
-
-        const user = auth.currentUser;
-
-        await fetch("http://localhost:3000/api/ensure-user", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            email: user.email,
-            uid: user.uid,
-            username: user.displayName || user.email.split("@")[0]
-          }),
-        });
-          
+  
         navigate("/dashboard");
   
       } catch (err) {
@@ -47,19 +35,7 @@ const Login = () => {
         const provider = new GoogleAuthProvider();
         try {
           const result = await signInWithPopup(auth, provider);
-          const user = result.user;
-          await fetch("http://localhost:3000/api/ensure-user", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: user.email,
-              uid: user.uid,
-              username: user.displayName || user.email.split("@")[0]
-            }),
-          });
-
           console.log("Google sign-in successful:", result.user);
-
           navigate("/dashboard");
         } catch (error) {
           console.error("Google sign-in error:", error.message);

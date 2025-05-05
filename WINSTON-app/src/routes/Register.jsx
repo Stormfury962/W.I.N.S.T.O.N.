@@ -18,15 +18,15 @@ const Register = () => {
 
     try {
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCred.user.uid;
+      console.log("Registered in Firebase:", userCred.user.email);
+
 
       try {
         await api.registerUser({
           username,
           email: userCred.user.email,
           password: password, 
-          role,
-          uid
+          role
         });
 
         console.log("User registered in database");

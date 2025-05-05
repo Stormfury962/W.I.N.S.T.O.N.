@@ -18,11 +18,9 @@ async function initializeDatabase() {
     driver: sqlite3.Database,
   });
 
-  const tables = await db.all(`SELECT name FROM sqlite_master WHERE type='table'`);
-  if (tables.length === 0) {
-    const schema = readFileSync("database.sql", "utf8");
-    await db.exec(schema);
-  }
+  const schema = readFileSync("database.sql", "utf8");
+  await db.exec(schema);
+  console.log("Database initialized.");
 }
 
 const port = process.env.PORT || 3000;
