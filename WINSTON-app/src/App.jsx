@@ -8,28 +8,74 @@ import Login from './routes/Login.jsx';
 import Register from './routes/Register.jsx';
 import Navbar from './components/Navbar.jsx';
 import { api } from './services/api';
+import { auth } from "./firebase.js";
 
 
 
+
+
+const getVote = async(postID) => {
+  try{
+    const data = await api.getPostVotes(postID);
+    return(data);
+  }
+  catch (err){
+    console.error("Error in retrieving votes:", err);
+    alert(err.message || "Failed to load vote");
+  }
+}
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [replyInputs, setReplyInputs] = useState({});
   const [replies, setReplies] = useState({});
-
+  const [user, setUser] = useState(null);
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const data = await api.getPosts();
-        setPosts(data.posts || []);
-        data.posts.forEach(p => fetchReplies(p.post_id));
+        const postsWithVotes = await Promise.all((data.posts || []).map(async (post) => {
+          const voteData = await getVote(post.post_id);
+          return {
+            ...post,
+            votes: voteData.votes
+          };
+        }));
+        setPosts(postsWithVotes);
+        
       } catch (error) {
         console.error("Failed to load posts", error);
       }
     };
-    
     fetchPosts();
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+      if (!currentUser) {
+          navigate('/login');
+      }
+    return () => unsubscribe();
+  });
+
   }, []);
+  const handleVote = async (postId, value) => {
+    if (!user) {
+        alert("You must be logged in to vote");
+        return navigate('/login');
+    }
+  
+    try {
+        const userData = await api.getUserRole(user.email);
+    
+        await api.voteOnPost({
+            user_id: userData.user_id,
+            post_id: postId,
+            vote_type: value
+        });
+    } catch (err) {
+        console.error("Error voting on post:", err);
+        alert(err.message || "Failed to vote on post");
+    }
+  };
   
   const fetchReplies = async(postId) =>{
     try{
@@ -85,15 +131,14 @@ function App() {
             <small>Posted by {post.username}</small>
 
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "8px" }}>
-            <button onClick={() => handleVote(post.post_id, 1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
-              <i className="material-symbols-outlined">keyboard_arrow_up</i> Upvote
-            </button>
-            <span>0</span>
-            <button onClick={() => handleVote(post.post_id, -1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
-              <i className="material-symbols-outlined">keyboard_arrow_down</i>Downvote 
-            </button>
-
-              <p> {post.upvotes}   {post.downvotes}</p>
+              <button onClick={() => handleVote(post.post_id, 1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
+               <i className="material-symbols-outlined">keyboard_arrow_up</i> Upvote
+             </button>
+             <span>0</span>
+             <button onClick={() => handleVote(post.post_id, -1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
+               <i className="material-symbols-outlined">keyboard_arrow_down</i>Downvote 
+             </button>
+              <p> Votes: {post.votes}</p>
             </div>
 
             <div style={{marginTop: "10px"}}>
