@@ -44,7 +44,13 @@ function App() {
             <strong>{post.title}</strong>
             <p>{post.body}</p>
             <small>Posted by {post.username}</small>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "8px" }}>
+              <button onClick={() => handleVote(post.post_id, 1)}> Upvote</button>
+              <button onClick={() => handleVote(post.post_id, -1)}> Downvote</button>
+              <p> {post.upvotes}   {post.downvotes}</p>
           </div>
+        </div>
         ))
       )}
     </div>
