@@ -124,7 +124,6 @@ export default function initRoutes(db) {
          ON CONFLICT(user_id, post_id) DO UPDATE SET vote_type = excluded.vote_type`,
         [user_id, post_id || null, reply_id || null, vote_type],
       );
-
       res.status(200).json({ message: "Vote recorded" });
     } catch (err) {
       res.status(500).json({ error: err.message });
@@ -138,7 +137,7 @@ export default function initRoutes(db) {
     try {
       const result = await db.get(
         `SELECT 
-           SUM(vote_type)
+           SUM(vote_type) AS votes
          FROM votes
          WHERE post_id = ?`,
         [post_id],
