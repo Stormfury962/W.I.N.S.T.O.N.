@@ -45,14 +45,14 @@ function App() {
           console.log(`Role for user ${post.user_id}:`, roleData);
           return {
             ...post,
-            votes: voteData.votes,
+            votes: voteData.votes || 0,
             role: roleData.role
           };
         } catch (error) {
           console.error(`Failed to fetch role for user ${post.user_id}:`, error);
           return {
             ...post,
-            votes: voteData.votes,
+            votes: voteData.votes || 0,
             role: "Unknown"
           };
         }
