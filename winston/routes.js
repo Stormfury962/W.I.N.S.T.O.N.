@@ -117,12 +117,27 @@ export default function initRoutes(db) {
         .json({ error: 'vote_type must be either "upvote" or "downvote"' });
     }
 
+    
+    const user_vote = await db.get(
+      `SELECT 
+         vote_type AS votes
+       FROM votes
+       WHERE (post_id, user_id) = (?, ?)`,
+      [post_id, user_id],
+    );
+
     try {
+      var new_vote_type = vote_type;
+      if (user_vote) {
+        if (user_vote.votes == vote_type) {
+          new_vote_type = 0;
+        }
+      }
       await db.run(
         `INSERT INTO votes (user_id, post_id, reply_id, vote_type)
          VALUES (?, ?, ?, ?)
          ON CONFLICT(user_id, post_id) DO UPDATE SET vote_type = excluded.vote_type`,
-        [user_id, post_id || null, reply_id || null, vote_type],
+        [user_id, post_id || null, reply_id || null, new_vote_type],
       );
       res.status(200).json({ message: "Vote recorded" });
     } catch (err) {
