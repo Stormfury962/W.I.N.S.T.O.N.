@@ -174,4 +174,56 @@
     text-decoration: underline;
 }
 
+.socialButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    border: none;
+    border-radius: 8px;
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+  }
+  
+  .socialButton:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.03);
+  }
+  
+  .inputField {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    transition: border 0.2s ease-in-out;
+  }
+  
+  .inputField:focus {
+    border-color: #5f41e4;
+    outline: none;
+  }
+  
+  .loginButton {
+    background: linear-gradient(135deg, #5f41e4, #6d59f2);
+    color: #fff;
+    font-size: 1.1rem;
+    padding: 0.8rem 0;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 12px rgba(95, 65, 228, 0.3);
+  }
+  
+  .loginButton:hover {
+    background: linear-gradient(135deg, #4320df, #5f41e4);
+    transform: scale(1.02);
+  }
+  
+
 
