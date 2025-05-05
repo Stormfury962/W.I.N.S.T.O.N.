@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App.jsx'
-import Dashboard from './routes/Dashboard.jsx'
+import Home from './routes/Home.jsx'
 import Contact from './routes/Contact.jsx'
 import Profile from './routes/Profile.jsx'
 import Login from './routes/Login.jsx'
@@ -19,8 +19,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
       path: '/',
       element: <Layout />,
       children: [
-        { path: '/', element: <App /> },
-        { path: '/dashboard', element: <Dashboard /> },
+        { path: '/', element: <Home /> },
+        { path: '/home', element: <App /> },
+        { path: '/dashboard', element: <App /> },
         { path: '/contact', element: <Contact /> },
         { path: '/profile', element: <Profile /> },
         { path: '/login', element: <Login /> },
