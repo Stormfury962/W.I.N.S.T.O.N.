@@ -71,6 +71,15 @@ function App() {
             post_id: postId,
             vote_type: value
         });
+        const voteData = await getVote(postId);
+      
+      setPosts(currentPosts => 
+        currentPosts.map(post => 
+          post.post_id === postId 
+            ? { ...post, votes: voteData.votes } 
+            : post
+        )
+      );
     } catch (err) {
         console.error("Error voting on post:", err);
         alert(err.message || "Failed to vote on post");
@@ -134,11 +143,10 @@ function App() {
               <button onClick={() => handleVote(post.post_id, 1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
                <i className="material-symbols-outlined">keyboard_arrow_up</i> Upvote
              </button>
-             <span>0</span>
+             <span>{post.votes}</span>
              <button onClick={() => handleVote(post.post_id, -1)} style={{ display: 'flex', alignItems: 'center', gap: '4px', padding: '0px 5px', cursor: 'pointer' }}>
                <i className="material-symbols-outlined">keyboard_arrow_down</i>Downvote 
              </button>
-              <p> Votes: {post.votes}</p>
             </div>
 
             <div style={{marginTop: "10px"}}>
