@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS users (
-    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE TABLE IF NOT EXISTS posts (
-    post_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    post_id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     title TEXT NOT NULL,
     body TEXT NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 
 CREATE TABLE IF NOT EXISTS replies (
-    reply_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    reply_id INTEGER PRIMARY KEY,
     post_id INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     body TEXT NOT NULL,
@@ -28,11 +28,11 @@ CREATE TABLE IF NOT EXISTS replies (
 );
 
 CREATE TABLE IF NOT EXISTS votes (
-    vote_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    vote_id INTEGER PRIMARY KEY,
     user_id INTEGER NOT NULL,
     post_id INTEGER,
     reply_id INTEGER,
-    vote_type TEXT NOT NULL CHECK(vote_type IN ('upvote', 'downvote')),
+    vote_type INTEGER NOT NULL,
     UNIQUE (user_id, post_id),
     UNIQUE (user_id, reply_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id),
