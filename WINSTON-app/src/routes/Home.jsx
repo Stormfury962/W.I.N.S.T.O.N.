@@ -1,10 +1,10 @@
 import Navbar from '../components/Navbar.jsx'
 import React, { useEffect, useState } from "react";
 import styles from '../styles/login.module.css';
-import { auth } from "../firebase";
+import { auth } from "../firebase.js";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { api } from '../services/api';
+import { api } from '../services/api.js';
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -41,8 +41,11 @@ const Dashboard = () => {
     return (
         <div>
             <Navbar />
-            <h1>Dashboard</h1>
+                <div style={{ textAlign: 'center', padding: '2rem' }}>
 
+            <h1>Welcome to WINSTON</h1>
+            <p>Web-based Interface Network for Students, TAs, and Organized Networks</p>
+            <br></br><br></br>
             {user ? (
                 <div>
                     <p>Logged in as: {user.email}</p>
@@ -59,6 +62,7 @@ const Dashboard = () => {
                     </button>
                 </div>
             )}
+        </div>
         </div>
     );
 };

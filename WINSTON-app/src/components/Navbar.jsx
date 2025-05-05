@@ -44,7 +44,7 @@ const Navbar = () => {
         </h1>
         <nav ref={navRef}>
             <Link to="/" onClick={showNavbar}>Home</Link>
-            <Link to="/dashboard" onClick={showNavbar}>Dashboard</Link>
+            <Link to="/Home" onClick={showNavbar}>Dashboard</Link>
             <Link to="/contact" onClick={showNavbar}>Contact</Link>
             <Link to="/profile" onClick={showNavbar}>Profile</Link>
             {isLoggedIn ? (
