@@ -45,7 +45,7 @@ function App() {
           console.log(`Role for user ${post.user_id}:`, roleData);
           return {
             ...post,
-            votes: voteData.votes,
+            votes: voteData.votes || 0,
             role: roleData.role
           };
         } catch (error) {
@@ -75,6 +75,14 @@ function App() {
 
     return () => unsubscribe();
   }, []); 
+
+  useEffect(() => {
+    if (posts.length > 0) {
+      posts.forEach(post => {
+        fetchReplies(post.post_id);
+      });
+    }
+  }, [posts.length]);
 
   const handleVote = async (postId, value) => {
     if (!user) {
@@ -116,7 +124,8 @@ function App() {
   };
 
   const handleReply = async(postId) =>{
-    const user_id =1; //CHANGE AFTER
+    const userData = await api.getUserRole(user.email);
+    const user_id = userData.user_id;    
     const body = replyInputs[postId]
     if (!body) return alert("Reply can't be empty")
 
